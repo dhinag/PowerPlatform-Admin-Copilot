@@ -1,0 +1,35 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="container">
+
+    <h3 class="display-7">Welcome to Power Platform Admin Copilot</h3>
+      <div class="form-group">
+          <p>
+          <textarea id="txtAction" name="input" class="form-control col-md-6" placeholder="What action do you want me to take?"></textarea>
+         </p>
+          <p><button id="btnAction" class="btn btn-primary">Submit</button> </p>
+         
+          <label id="lblResult" for="static-info" class="control-label text-left p-3 mb-2 bg-success text-white" style="display: none;"></label>
+      </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+$("#btnAction").click(function()
+{   
+    $("#lblResult").show();
+    //call agent from Python agent
+    $("#lblResult").text("Using LLM to determine the actions required and in what order...")
+    $.get( "https://35af-152-58-205-59.in.ngrok.io/request/admin/?question=" + $("#txtAction").val())
+      .done(function( data ) {
+
+        var obj = jQuery.parseJSON(data);
+        $("#lblResult").text(obj.Message);
+      });
+});
+</script>
